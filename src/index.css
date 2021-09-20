@@ -11,3 +11,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: 'Avenir';
+  src: local('Avenir'), url(./fonts/AvenirLTStd-Black.otf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Avenir-Medium';
+  src: local('Avenir'), url(./fonts/AvenirLTStd-Book.otf) format('truetype');
+}

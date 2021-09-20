@@ -1,38 +1,62 @@
-.App {
-  text-align: center;
+.divider {
+  border-bottom: 1px solid #E2E4E5;
 }
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.header-row {
+  padding-top: 10px;
+  padding-bottom: 10px;
 }
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.header-center {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+}
+.header-right {
+  float: right;
+}
+.header-button {
+  font-family: 'avenir';
+  font-weight: 800;
+  font-size: 16px;
 }
 
-.App-link {
-  color: #61dafb;
+.body-container {
+  margin-left: 120px !important;
+  margin-right: 120px !important;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.form-control:focus {
+  box-shadow: none !important;
+}
+
+button:focus {
+  box-shadow: none !important;
+}
+
+/*page content*/
+.cform-title-wrapper {
+  margin-top: 30px;
+  padding: 20px 71px;
+}
+.cform-title {
+  font-family: 'avenir-medium' !important;
+  font-size: 42px !important;
+  max-width: 640px;
+  border: none !important;
+}
+.cform-title-desc {
+  font-family: 'avenir-medium' !important;
+  font-size: 16px;
+  margin-top: 10px;
+  margin-left: 10px;
+}
+.cform-icon-group {
+  width: 71px;
+  text-align: end;
+}
+.cform-footer {
+  display: flex;
+  margin-top: 40px;
+}
+.cform-footer-submit {
+  margin-left: 10px;
+  padding: 12px 32px;
 }
