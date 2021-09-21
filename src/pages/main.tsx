@@ -5,40 +5,63 @@ import { faCircle } from '@fortawesome/free-regular-svg-icons'
 import { faEllipsisH } from '@fortawesome/free-solid-svg-icons'
 
 import Form from 'components/form'
+import Preview from 'components/preview'
 
 export default function() {
   const [currentScreen, setCurrentScreen] = useState<string>('Form');
   return (
     <div>
-      <Container className="header">
+      <div className="header">
         <Row className="header-row">
           <Col><FontAwesomeIcon icon={faCircle} color="blue" size="2x" /></Col>
           <Col className="header-center">
-              <Button variant="outline-*" className="header-button" style={{ opacity: currentScreen === 'Form' ? 1 : 0.8 }}>
+              <Button
+                variant="outline-*"
+                className="header-button"
+                style={{ opacity: currentScreen === 'Form' ? 1 : 0.4 }}
+                onClick={() => setCurrentScreen('Form')}>
                 Form
               </Button>
-              <Button variant="outline-*" className="header-button" style={{ opacity: currentScreen === 'Responses' ? 1 : 0.8 }}>
+              <Button
+                variant="outline-*"
+                className="header-button"
+                style={{ opacity: currentScreen === 'Responses' ? 1 : 0.4 }}
+                onClick={() => setCurrentScreen('Responses')}>
                 Responses
               </Button>
-              <Button variant="outline-*" className="header-button" style={{ opacity: currentScreen === 'Settings' ? 1 : 0.8 }}>
+              <Button
+                variant="outline-*"
+                className="header-button"
+                style={{ opacity: currentScreen === 'Settings' ? 1 : 0.4 }}
+                onClick={() => setCurrentScreen('Settings')}>
                 Settings
               </Button>
           </Col>
           <Col>
             <Col className="header-right">
-              <Button variant="outline-*" className="header-button">Publish</Button>
-              <Button variant="outline-*" className="header-button">Preview Form</Button>
+              <Button
+                variant="outline-*"
+                className="header-button"
+                onClick={() => setCurrentScreen('Publish')}>
+                Publish
+              </Button>
+              <Button
+                variant="outline-*"
+                className="header-button"
+                onClick={() => setCurrentScreen('Preview')}>
+                Preview Form
+              </Button>
               <Button variant="outline-*" className="header-button">
                 <FontAwesomeIcon icon={faEllipsisH} />
               </Button>
             </Col>
           </Col>
         </Row>
-      </Container>
-      <div className="divider"></div>
-      <Container className="body-container">
-        <Form />
-      </Container>
+      </div>
+      <div className="body-container">
+        {currentScreen === 'Form' && (<Form />)}
+        {currentScreen === 'Preview' && (<Preview />)}
+      </div>
     </div>
   )
 }
