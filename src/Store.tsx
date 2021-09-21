@@ -3,6 +3,8 @@ import React, { createContext, useReducer, useContext } from 'react';
 import Reducer, { State, Action } from 'Reducer';
 
 const initialState: State = {
+  isStart: false,
+  components: [],
   footerSumbit: {
     caption: 'Submit',
     background: '#6200EE',

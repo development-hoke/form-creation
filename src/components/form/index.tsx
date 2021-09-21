@@ -10,15 +10,39 @@ import { ReactComponent as PlusSvg } from 'svgs/plus.svg';
 import { ReactComponent as SettingSvg } from 'svgs/setting.svg';
 import { ReactComponent as UploadIconSvg } from 'svgs/upload_icon.svg';
 import { useDispatch, useGlobalState } from 'Store'
-import { ActionType } from 'Reducer'
+import { ActionType, CParagraph } from 'Reducer'
+
+import Paragraph from 'components/form/paragraph'
 
 export default function() {
   const dispatch = useDispatch();
+  const isStart = useGlobalState('isStart');
+  const components = useGlobalState('components');
   const footerSumbit = useGlobalState('footerSumbit');
 
   const [cover, showCover] = useState<boolean>(false);
   const [logo, showLogo] = useState<boolean>(false);
   const [footerSetting, showFooterSetting] = useState<boolean>(false);
+  const [fComponents, setFComponents] = useState<CParagraph[]>(components);
+
+  const onTitleKeyEvent = (v : string) => {
+    if (v === 'Enter') {
+      const newItem = {
+        type: 'paragraph',
+        text: ''
+      }
+      let nc = [];
+      if (fComponents.length == 0) nc = [newItem]
+      else nc = [newItem, ...fComponents];
+      setFComponents(nc);
+    }
+  }
+
+  const renderComponents = (item: any) => {
+    return (
+      <Paragraph />
+    )
+  }
 
   const changeSubmitCaption = (v : string) => {
     dispatch({
@@ -57,14 +81,10 @@ export default function() {
         <ImageSvg style={{ marginLeft: 15, opacity: cover ? 0.3 : 1 }} onClick={() => showCover(true)} />
       </div>)}
       <div className="cform-title-wrapper">
-        <Form.Control className="cform-title" type="text" placeholder="Give your form a title" />
-        <Form.Text className="cform-title-desc">Press enter to start using the template</Form.Text>
+        <Form.Control className="cform-title" type="text" placeholder="Give your form a title" onKeyPress={(e) => onTitleKeyEvent(e.key)} />
+        {!isStart && (<Form.Text className="cform-title-desc">Press enter to start using the template</Form.Text>)}
       </div>
-      <div className="cform-icon-group">
-        <TrashSvg />
-        <DotsSvg style={{ marginLeft: 15 }} />
-        <PlusSvg style={{ marginLeft: 15 }} />
-      </div>
+      {fComponents.map((item) => renderComponents(item))}
       <div className="cform-footer">
         <div className="cform-icon-group">
           <SettingSvg onClick={() => showFooterSetting((prev) => !prev)} />

@@ -197,3 +197,13 @@ button:focus {
   margin-top: 20px !important;
   margin-bottom: 20px !important;
 }
+
+.cform-text-container {
+  display: flex;
+}
+.cform-text-input {
+  font-family: 'avenir-medium' !important;
+  font-size: 16px !important;
+  max-width: 640px;
+  border: none !important;
+}
