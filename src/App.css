@@ -58,12 +58,20 @@ button:focus {
   text-align: end;
 }
 .cform-footer {
-  display: flex;
+  display: -webkit-box;
   margin-top: 40px;
 }
 .cform-footer-submit {
   margin-left: 10px;
   padding: 12px 32px !important;
+}
+.cform-footer-dialog {
+  margin-left: 10px;
+  width: 400px;
+  height: 330px;
+  border-radius: 6px;
+  border: 1px solid #DDDBD7;
+  padding: 25px;
 }
 
 .image-cover-wrapper {
@@ -178,4 +186,14 @@ button:focus {
   color: white;
   border-radius: 6px;
   margin-right: 13px;
+}
+
+.mv-20-10 {
+  margin-top: 10px !important;
+  margin-bottom: 20px !important;
+}
+
+.mv-20-20 {
+  margin-top: 20px !important;
+  margin-bottom: 20px !important;
 }
