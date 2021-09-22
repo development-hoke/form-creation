@@ -207,3 +207,29 @@ button:focus {
   max-width: 640px;
   border: none !important;
 }
+
+.cform-add-container {
+  width: 400px;
+  height: 400px;
+  padding: 25px;
+  border-radius: 6px;
+  border: 1px solid #DDDBD7;
+  margin-left: 10px;
+}
+
+.cform-add-item {
+  padding: 10px 15px;
+  display: flex;
+  align-items: center;
+  background: white;
+}
+
+.cform-add-item:hover {
+  background: #F7F7F7;
+}
+
+.cform-add-item-text {
+  font-family: 'avenir-medium' !important;
+  font-size: 16px !important;
+  margin-left: 18px;
+}

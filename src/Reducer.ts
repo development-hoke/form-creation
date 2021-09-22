@@ -10,9 +10,18 @@ export interface CParagraph {
   text: string
 }
 
+export interface CShortAnswer {
+  id: number,
+  type: string,
+  placeholder: string,
+  required: boolean
+}
+
+export type ComponentType = CParagraph | CShortAnswer
+
 export interface State {
   isStart: boolean
-  components: (CParagraph)[]
+  components: ComponentType[]
   footerSumbit: sumbitStyle
   maxId: number,
 }

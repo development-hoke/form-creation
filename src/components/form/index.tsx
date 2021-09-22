@@ -10,9 +10,10 @@ import { ReactComponent as PlusSvg } from 'svgs/plus.svg';
 import { ReactComponent as SettingSvg } from 'svgs/setting.svg';
 import { ReactComponent as UploadIconSvg } from 'svgs/upload_icon.svg';
 import { useDispatch, useGlobalState } from 'Store'
-import { ActionType, CParagraph } from 'Reducer'
+import { ActionType, ComponentType } from 'Reducer'
 
-import Paragraph from 'components/form/paragraph'
+import Paragraph from 'components/form/pg'
+import ShortAnswer from 'components/form/shortan'
 
 export default function() {
   const dispatch = useDispatch();
@@ -24,7 +25,7 @@ export default function() {
   const [cover, showCover] = useState<boolean>(false);
   const [logo, showLogo] = useState<boolean>(false);
   const [footerSetting, showFooterSetting] = useState<boolean>(false);
-  const [fComponents, setFComponents] = useState<CParagraph[]>(components);
+  const [fComponents, setFComponents] = useState<ComponentType[]>(components);
   const [started, setStarted] = useState<boolean>(isStart);
   const [nextId, increaseNextId] = useState<number>(maxId);
 
@@ -51,7 +52,17 @@ export default function() {
           item={item}
           onDelete={deleteComponent}
           onUpdate={updateComponent} 
-          onEnter={breakLineComponent}/>
+          onEnter={breakLineComponent}
+          onAdd={addComponent}/>
+      )
+    } else if (item.type === 'shortA' || item.type === 'number' || item.type === 'telephone' || item.type === 'email') {
+      return (
+        <ShortAnswer
+          item={item}
+          onDelete={deleteComponent}
+          onUpdate={updateComponent} 
+          onEnter={breakLineComponent}
+          onAdd={addComponent}/>
       )
     }
   }
@@ -85,8 +96,32 @@ export default function() {
         type: 'paragraph',
         text: ''
       }
-      console.log(itemIdx);
-      setFComponents((prev) => itemIdx == 0 ? [...prev, newItem] : prev.splice(itemIdx, 0, newItem));
+      setFComponents((prev) => {
+        let newItems = [...prev];
+        newItems.splice(itemIdx + 1, 0, newItem);
+        return newItems;
+      });
+      increaseNextId((prev) => prev + 1);
+    }
+  }
+
+  const addComponent = (id: number, type: string) => {
+    const itemIdx = fComponents.findIndex((it) => it.id == id);
+    if (itemIdx < 0) return;
+
+    const item = fComponents[itemIdx];
+    if (type === 'shortA' || type === 'number' || type === 'telephone' || type === 'email') {
+      const newItem = {
+        id: nextId + 1,
+        type: type,
+        placeholder: '',
+        required: false,
+      }
+      setFComponents((prev) => {
+        let newItems = [...prev];
+        newItems.splice(itemIdx + 1, 0, newItem);
+        return newItems;
+      });
       increaseNextId((prev) => prev + 1);
     }
   }
