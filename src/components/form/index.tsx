@@ -19,15 +19,20 @@ export default function() {
   const isStart = useGlobalState('isStart');
   const components = useGlobalState('components');
   const footerSumbit = useGlobalState('footerSumbit');
+  const maxId = useGlobalState('maxId');
 
   const [cover, showCover] = useState<boolean>(false);
   const [logo, showLogo] = useState<boolean>(false);
   const [footerSetting, showFooterSetting] = useState<boolean>(false);
   const [fComponents, setFComponents] = useState<CParagraph[]>(components);
+  const [started, setStarted] = useState<boolean>(isStart);
+  const [nextId, increaseNextId] = useState<number>(maxId);
 
-  const onTitleKeyEvent = (v : string) => {
+  const onTitleKeyEvent = (v: string) => {
     if (v === 'Enter') {
+      setStarted(true);
       const newItem = {
+        id: nextId + 1,
         type: 'paragraph',
         text: ''
       }
@@ -35,16 +40,23 @@ export default function() {
       if (fComponents.length == 0) nc = [newItem]
       else nc = [newItem, ...fComponents];
       setFComponents(nc);
+      increaseNextId((prev) => prev + 1);
     }
   }
 
   const renderComponents = (item: any) => {
-    return (
-      <Paragraph />
-    )
+    if (item.type === 'paragraph') {
+      return (
+        <Paragraph
+          item={item}
+          onDelete={deleteComponent}
+          onUpdate={updateComponent} 
+          onEnter={breakLineComponent}/>
+      )
+    }
   }
 
-  const changeSubmitCaption = (v : string) => {
+  const changeSubmitCaption = (v: string) => {
     dispatch({
       type: ActionType.SET_SUBMIT_STYLE,
       payload: {
@@ -52,6 +64,31 @@ export default function() {
         caption: v,
       },
     });
+  }
+
+  const deleteComponent = (id: number) => {
+    setFComponents((prev) => prev.filter((comp) => comp.id != id));
+  }
+
+  const updateComponent = (id: number, item: any) => {
+    setFComponents((prev) => prev.map((comp) => comp.id == id ? item : comp));
+  }
+
+  const breakLineComponent = (id: number) => {
+    const itemIdx = fComponents.findIndex((it) => it.id == id);
+    if (itemIdx < 0) return;
+
+    const item = fComponents[itemIdx];
+    if (item.type === 'paragraph') {
+      const newItem = {
+        id: nextId + 1,
+        type: 'paragraph',
+        text: ''
+      }
+      console.log(itemIdx);
+      setFComponents((prev) => itemIdx == 0 ? [...prev, newItem] : prev.splice(itemIdx, 0, newItem));
+      increaseNextId((prev) => prev + 1);
+    }
   }
 
   return (
@@ -77,12 +114,24 @@ export default function() {
         </div>
       )}
       {(!cover || !logo) && (<div className="cform-icon-group">
-        <HexSvg style={{ opacity: logo ? 0 : 1 }} onClick={() => showLogo(true)} />
-        <ImageSvg style={{ marginLeft: 15, opacity: cover ? 0.3 : 1 }} onClick={() => showCover(true)} />
+        <HexSvg
+          style={{ opacity: logo ? 0 : 1 }}
+          onClick={() => showLogo(true)} />
+        <ImageSvg
+          style={{ marginLeft: 15, opacity: cover ? 0.3 : 1 }}
+          onClick={() => showCover(true)} />
       </div>)}
       <div className="cform-title-wrapper">
-        <Form.Control className="cform-title" type="text" placeholder="Give your form a title" onKeyPress={(e) => onTitleKeyEvent(e.key)} />
-        {!isStart && (<Form.Text className="cform-title-desc">Press enter to start using the template</Form.Text>)}
+        <Form.Control
+          className="cform-title"
+          type="text"
+          placeholder="Give your form a title"
+          onKeyPress={(e) => onTitleKeyEvent(e.key)} />
+        {!started && (
+          <Form.Text className="cform-title-desc">
+            Press enter to start using the template
+          </Form.Text>
+        )}
       </div>
       {fComponents.map((item) => renderComponents(item))}
       <div className="cform-footer">

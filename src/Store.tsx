@@ -9,7 +9,8 @@ const initialState: State = {
     caption: 'Submit',
     background: '#6200EE',
     color: '#F7F7F7'
-  }
+  },
+  maxId: 0
 };
 
 const StoreContext = createContext<State>(initialState);

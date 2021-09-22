@@ -5,6 +5,7 @@ interface sumbitStyle {
 }
 
 export interface CParagraph {
+  id: number,
   type: string,
   text: string
 }
@@ -13,12 +14,14 @@ export interface State {
   isStart: boolean
   components: (CParagraph)[]
   footerSumbit: sumbitStyle
+  maxId: number,
 }
 
 export enum ActionType {
   SET_IS_START = 'SET_IS_START',
   SET_COMPONENT = 'SET_COMPONENT',
   SET_SUBMIT_STYLE = 'SET_SUBMIT_STYLE',
+  SET_MAX_ID = 'SET_MAX_ID'
 }
 
 export interface Action {
@@ -44,6 +47,11 @@ const Reducer = (state: State, action: Action): any => {
       return {
         ...state,
         footerSumbit: payload,
+      };
+    case ActionType.SET_MAX_ID:
+      return {
+        ...state,
+        maxId: payload,
       };
     default:
       break;
