@@ -10,10 +10,12 @@ import { ReactComponent as PlusSvg } from 'svgs/plus.svg';
 import { ReactComponent as SettingSvg } from 'svgs/setting.svg';
 import { ReactComponent as UploadIconSvg } from 'svgs/upload_icon.svg';
 import { useDispatch, useGlobalState } from 'Store'
-import { ActionType, ComponentType } from 'Reducer'
+import { ActionType, ComponentType, MultiComponent } from 'Reducer'
 
 import Paragraph from 'components/form/pg'
-import ShortAnswer from 'components/form/shortan'
+import Answer from 'components/form/input'
+import LAnswer from 'components/form/textarea'
+import MultiInput from 'components/form/multiinput'
 
 export default function() {
   const dispatch = useDispatch();
@@ -42,28 +44,6 @@ export default function() {
       else nc = [newItem, ...fComponents];
       setFComponents(nc);
       increaseNextId((prev) => prev + 1);
-    }
-  }
-
-  const renderComponents = (item: any) => {
-    if (item.type === 'paragraph') {
-      return (
-        <Paragraph
-          item={item}
-          onDelete={deleteComponent}
-          onUpdate={updateComponent} 
-          onEnter={breakLineComponent}
-          onAdd={addComponent}/>
-      )
-    } else if (item.type === 'shortA' || item.type === 'number' || item.type === 'telephone' || item.type === 'email') {
-      return (
-        <ShortAnswer
-          item={item}
-          onDelete={deleteComponent}
-          onUpdate={updateComponent} 
-          onEnter={breakLineComponent}
-          onAdd={addComponent}/>
-      )
     }
   }
 
@@ -105,24 +85,84 @@ export default function() {
     }
   }
 
+  const deleteOption = (id: number, opIdx: number, data: MultiComponent) => {
+    data.options = data.options.filter((op, idx) => idx != opIdx);
+    setFComponents((prev) => prev.map((comp) => comp.id == id ? data : comp));
+  }
+
+  const updateOption = (id: number, opIdx: number, data: MultiComponent, value: string) => {
+    data.options = data.options.map((op, idx) => opIdx == idx ? value : op);
+    setFComponents((prev) => prev.map((comp) => comp.id == id ? data : comp));
+  }
+
   const addComponent = (id: number, type: string) => {
     const itemIdx = fComponents.findIndex((it) => it.id == id);
     if (itemIdx < 0) return;
 
     const item = fComponents[itemIdx];
-    if (type === 'shortA' || type === 'number' || type === 'telephone' || type === 'email') {
-      const newItem = {
+    let newItem: ComponentType;
+    if (type === 'shortA' || type === 'number' || type === 'telephone' || type === 'email' || type === 'longA') {
+      newItem = {
         id: nextId + 1,
         type: type,
-        placeholder: '',
         required: false,
+        placeholder: '',
       }
-      setFComponents((prev) => {
-        let newItems = [...prev];
-        newItems.splice(itemIdx + 1, 0, newItem);
-        return newItems;
-      });
-      increaseNextId((prev) => prev + 1);
+    } else if (type === 'dropdown' || type === 'checkbox' || type === 'radio') {
+      newItem = {
+        id: nextId + 1,
+        type: type,
+        required: false,
+        options: [],
+      }
+    }
+    setFComponents((prev) => {
+      let newItems = [...prev];
+      newItems.splice(itemIdx + 1, 0, newItem);
+      return newItems;
+    });
+    increaseNextId((prev) => prev + 1);
+  }
+
+  const renderComponents = (item: any) => {
+    if (item.type === 'paragraph') {
+      return (
+        <Paragraph
+          item={item}
+          onDelete={deleteComponent}
+          onUpdate={updateComponent}
+          onEnter={breakLineComponent}
+          onAdd={addComponent}/>
+      )
+    } else if (item.type === 'shortA' || item.type === 'number' || item.type === 'telephone' || item.type === 'email') {
+      return (
+        <Answer
+          item={item}
+          onDelete={deleteComponent}
+          onUpdate={updateComponent}
+          onEnter={breakLineComponent}
+          onAdd={addComponent}/>
+      )
+    } else if (item.type === 'longA') {
+      return (
+        <LAnswer
+          item={item}
+          onDelete={deleteComponent}
+          onUpdate={updateComponent}
+          onEnter={breakLineComponent}
+          onAdd={addComponent}/>
+      )
+    } else if (item.type === 'dropdown' || item.type === 'checkbox' || item.type === 'radio') {
+      return (
+        <MultiInput
+          item={item}
+          onDelete={deleteComponent}
+          onUpdate={updateComponent}
+          onEnter={breakLineComponent}
+          onAdd={addComponent}
+          onDeleteOption={deleteOption}
+          onUpdateOption={updateOption}/>
+      )
     }
   }
 
@@ -170,7 +210,7 @@ export default function() {
       </div>
       {fComponents.map((item) => renderComponents(item))}
       <div className="cform-footer">
-        <div className="cform-icon-group">
+        <div className="cform-icon-group" style={{ paddingTop: 10 }}>
           <SettingSvg onClick={() => showFooterSetting((prev) => !prev)} />
         </div>
         <Button

@@ -5,14 +5,11 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import { ReactComponent as TrashSvg } from 'svgs/trash.svg';
 import { ReactComponent as DotsSvg } from 'svgs/dots.svg';
 import { ReactComponent as PlusSvg } from 'svgs/plus.svg';
-import { ReactComponent as TextSvg } from 'svgs/text.svg';
-import { ReactComponent as NumberSvg } from 'svgs/number.svg';
-import { ReactComponent as PhoneSvg } from 'svgs/phone.svg';
-import { ReactComponent as MailSvg } from 'svgs/address.svg';
-import { CShortAnswer } from 'Reducer'
+import { ReactComponent as LongSvg } from 'svgs/long_answer.svg';
+import { TextComponent } from 'Reducer'
 import AddDialog from 'components/form/adddialog'
 interface Props{
-  item: CShortAnswer;
+  item: TextComponent;
   onDelete: (id: number) => void
   onUpdate: (id: number, item: any) => void
   onEnter: (id: number) => void
@@ -41,20 +38,6 @@ export default function({
     }
   }
 
-  const inputType = () => {
-    switch(item.type) {
-      case 'shortA':
-        return 'text';
-      case 'number':
-        return 'number';
-      case 'telephone':
-        return 'tel';
-      case 'email':
-        return 'email';
-      default:
-        return 'text';
-    }
-  }
   return (
     <div className="cform-text-container">
       <div className="cform-icon-group">
@@ -63,23 +46,21 @@ export default function({
         <PlusSvg style={{ marginLeft: 15 }} onClick={() => showAddDialog(true)} />
       </div>
       <div style={{ width: 640 }}>
-        <div style={{ width: 408, display: 'inline-block', position: 'relative', marginLeft: 10 }}>
+        <div style={{ width: 648, display: 'inline-block', position: 'relative', marginLeft: 10 }}>
           <Form.Control
-            className="control-sq"
+            as="textarea"
+            className="control-lq"
             value={item.placeholder}
             placeholder="Click to Add placeholder text"
             onChange={(e) => updateText(e.target.value)}
-            type={inputType()}
           />
-          {item.type === 'shortA' && (<TextSvg className="icon-sq"/>)}
-          {item.type === 'number' && (<NumberSvg className="icon-sq"/>)}
-          {item.type === 'telephone' && (<PhoneSvg className="icon-sq"/>)}
-          {item.type === 'email' && (<MailSvg className="icon-sq"/>)}
+          <LongSvg className="icon-sq"/>
           {item.required && (<div className="control-required">*</div>)}
         </div>
         {addDialog && (
           <OutsideClickHandler
             onOutsideClick={() => showAddDialog(false)}
+            display="inline-block"
           >
             <AddDialog onAdd={(type) => {
               showAddDialog(false)

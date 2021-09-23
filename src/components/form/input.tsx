@@ -5,10 +5,14 @@ import OutsideClickHandler from 'react-outside-click-handler';
 import { ReactComponent as TrashSvg } from 'svgs/trash.svg';
 import { ReactComponent as DotsSvg } from 'svgs/dots.svg';
 import { ReactComponent as PlusSvg } from 'svgs/plus.svg';
-import { Paragraph } from 'Reducer'
+import { ReactComponent as TextSvg } from 'svgs/text.svg';
+import { ReactComponent as NumberSvg } from 'svgs/number.svg';
+import { ReactComponent as PhoneSvg } from 'svgs/phone.svg';
+import { ReactComponent as MailSvg } from 'svgs/address.svg';
+import { TextComponent } from 'Reducer'
 import AddDialog from 'components/form/adddialog'
 interface Props{
-  item: Paragraph;
+  item: TextComponent;
   onDelete: (id: number) => void
   onUpdate: (id: number, item: any) => void
   onEnter: (id: number) => void
@@ -19,7 +23,7 @@ export default function({
   onDelete,
   onUpdate,
   onEnter,
-  onAdd
+  onAdd,
 }: Props) {
   const inputRef = useRef(null);
 
@@ -28,33 +32,50 @@ export default function({
   const updateText = (v: string) => {
     onUpdate(item.id, {
       ...item,
-      text: v
+      placeholder: v
     })
   }
   const onKeyEvent = (k: string) => {
     if (k == 'Enter') {
       onEnter(item.id)
-    } else if (k == 'Backspace' && item.text == '') {
-      onDelete(item.id)
+    }
+  }
+
+  const inputType = () => {
+    switch(item.type) {
+      case 'shortA':
+        return 'text';
+      case 'number':
+        return 'number';
+      case 'telephone':
+        return 'tel';
+      case 'email':
+        return 'email';
+      default:
+        return 'text';
     }
   }
   return (
     <div className="cform-text-container">
-      <div className="cform-icon-group" style={{ paddingTop: 3 }}>
+      <div className="cform-icon-group">
         <TrashSvg onClick={(e) => onDelete(item.id) } />
         <DotsSvg style={{ marginLeft: 15 }} />
         <PlusSvg style={{ marginLeft: 15 }} onClick={() => showAddDialog(true)} />
       </div>
       <div style={{ width: 640 }}>
-        <Form.Control
-          as="textarea"
-          ref={inputRef}
-          className="cform-text-input"
-          type="text" 
-          placeholder="You can add a pharagraph in between though." 
-          value={item.text}
-          onChange={(e) => updateText(e.target.value)}
-          onKeyDown={(e) => onKeyEvent(e.key)}/>
+        <div style={{ width: 408, display: 'inline-block', position: 'relative', marginLeft: 10 }}>
+          <Form.Control
+            className="control-sq"
+            value={item.placeholder}
+            placeholder="Click to Add placeholder text"
+            onChange={(e) => updateText(e.target.value)}
+          />
+          {item.type === 'shortA' && (<TextSvg className="icon-sq"/>)}
+          {item.type === 'number' && (<NumberSvg className="icon-sq"/>)}
+          {item.type === 'telephone' && (<PhoneSvg className="icon-sq"/>)}
+          {item.type === 'email' && (<MailSvg className="icon-sq"/>)}
+          {item.required && (<div className="control-required">*</div>)}
+        </div>
         {addDialog && (
           <OutsideClickHandler
             onOutsideClick={() => showAddDialog(false)}

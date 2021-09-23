@@ -56,6 +56,7 @@ button:focus {
 .cform-icon-group {
   width: 71px;
   text-align: end;
+  padding-top: 20px;
 }
 .cform-footer {
   display: -webkit-box;
@@ -140,6 +141,18 @@ button:focus {
   margin-right: 8px;
 }
 
+.control-check {
+  width: 400px !important;
+  border: none !important;
+}
+
+.control-lq {
+  width: 640px !important;
+  padding: 15px 40px 15px 15px !important;
+  margin-top: 8px;
+  margin-right: 8px;
+}
+
 .icon-sq {
   position: absolute;
   top: 28px;
@@ -215,6 +228,7 @@ button:focus {
   border-radius: 6px;
   border: 1px solid #DDDBD7;
   margin-left: 10px;
+  margin-top: 10px;
 }
 
 .cform-add-item {
@@ -232,4 +246,14 @@ button:focus {
   font-family: 'avenir-medium' !important;
   font-size: 16px !important;
   margin-left: 18px;
+}
+
+.cform-add-item-container {
+  height: 330px;
+  overflow: auto;
+}
+
+.cform-check-container {
+  display: flex;
+  align-items: center;
 }

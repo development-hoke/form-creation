@@ -4,20 +4,27 @@ interface sumbitStyle {
   background: string;
 }
 
-export interface CParagraph {
+export interface Paragraph {
   id: number,
   type: string,
   text: string
 }
 
-export interface CShortAnswer {
+export interface TextComponent {
   id: number,
   type: string,
   placeholder: string,
   required: boolean
 }
 
-export type ComponentType = CParagraph | CShortAnswer
+export interface MultiComponent {
+  id: number
+  type: string
+  options: string[]
+  required: boolean
+}
+
+export type ComponentType = Paragraph | TextComponent | MultiComponent
 
 export interface State {
   isStart: boolean
